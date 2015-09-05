@@ -1,0 +1,52 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="14.0">
+
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <BuildToolsPath>$(MSBuildThisFileDirectory)build\</BuildToolsPath>
+    <TargetSolution>$(MSBuildThisFileDirectory)BuildTools.sln</TargetSolution>
+    <VersioningFile>$(MSBuildThisFileDirectory)Version.xml</VersioningFile>
+  </PropertyGroup>
+
+  <Import Project="$(BuildToolsPath)Flatcode.BuildTools.tasks" Condition="Exists('$(BuildToolsPath)Flatcode.BuildTools.tasks')" />
+
+  <Target Name="RestorePackages">
+    <Exec Command="$(BuildToolsPath)nuget.exe restore &quot;$(MSBuildThisFileDirectory)BuildTools.sln&quot; "/>
+  </Target>
+
+  <Target Name="Prebuild" DependsOnTargets="RestorePackages">
+    <GenerateVersioningInfo VersioningFile="$(VersioningFile)"
+                            OutputPath="$(MSBuildThisFileDirectory)obj\$(Configuration)"
+                            Condition="Exists('$(BuildToolsPath)Flatcode.BuildTools.tasks')" />
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="Prebuild">
+    <MSBuild BuildInParallel="true"
+             Projects="$(TargetSolution)"
+             Properties="RestorePackages=false;TreatWarningsAsErrors=true"
+             Targets="Build" />
+  </Target>
+
+  <Target Name="Clean">
+    <MSBuild BuildInParallel="true"
+             Projects="$(TargetSolution)"
+             Properties="RestorePackages=false"
+             Targets="Clean" />
+    <Delete Files="$(MSBuildThisFileDirectory)obj\Debug\VersioningInfo.cs;$(MSBuildThisFileDirectory)obj\Release\VersioningInfo.cs" />
+  </Target>
+
+  <Target Name="Rebuild">
+    <MSBuild BuildInParallel="true"
+             Projects="$(TargetSolution)"
+             Properties="RestorePackages=false;TreatWarningsAsErrors=true"
+             Targets="Rebuild" />
+  </Target>
+
+  <Target Name="Publish">
+    <MSBuild BuildInParallel="true"
+             Projects="$(TargetSolution)"
+             Properties="AssemblyOriginatorKeyFile=$(MSBuildThisFileDirectory)snk\Publisher.pub;DelaySign=true"
+             Targets="Build" />
+  </Target>
+
+</Project>
