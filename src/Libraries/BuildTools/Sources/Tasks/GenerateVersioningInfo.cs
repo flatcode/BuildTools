@@ -207,9 +207,9 @@ namespace Flatcode.BuildTools.Tasks
                     // Get commit hash
                     scmClientResult = scmClient.Execute("rev-parse HEAD");
                     commitHash = scmClientResult.Output.TrimEnd(' ', '\n');
-                    if (commitHash.Length > 10) {
+                    if (commitHash.Length > 8) {
                         // Trim hash to ten characters, if necessary
-                        commitHash = commitHash.Substring(0, 10);
+                        commitHash = commitHash.Substring(0, 8);
                     }
                     // Get branch name
                     scmClientResult = scmClient.Execute("rev-parse --abbrev-ref HEAD");

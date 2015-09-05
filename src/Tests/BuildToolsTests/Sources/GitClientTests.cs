@@ -31,6 +31,23 @@ namespace Flatcode.BuildTools.Tests
     public sealed class GitClientTests
     {
         #region Methods
+
+        [Fact]
+        public void CreateFailure()
+        {
+            // It is assumed that the current user profile is not a Git repository
+            ScmClient client = ScmClient.Create(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+            Assert.Null(client);
+        }
+
+        [Fact]
+        public void CreateSuccessful()
+        {
+            // It is assumed that the test is run via the Git repository of the project
+            ScmClient client = client = ScmClient.Create(Environment.CurrentDirectory);
+            Assert.NotNull(client);
+        }
+
         #endregion
     }
 }

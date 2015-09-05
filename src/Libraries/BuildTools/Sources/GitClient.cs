@@ -82,6 +82,7 @@ namespace Flatcode.BuildTools
                 Arguments = command,
                 CreateNoWindow = true,
                 FileName = Path.Combine(ExecutablePath, ExecutableName),
+                RedirectStandardError = true,
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
                 WorkingDirectory = WorkingDirectory
