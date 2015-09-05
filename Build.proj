@@ -42,10 +42,10 @@
              Targets="Rebuild" />
   </Target>
 
-  <Target Name="Publish">
+  <Target Name="Publish" DependsOnTargets="Prebuild">
     <MSBuild BuildInParallel="true"
              Projects="$(TargetSolution)"
-             Properties="AssemblyOriginatorKeyFile=$(MSBuildThisFileDirectory)snk\Publisher.pub;DelaySign=true"
+             Properties="RestorePackages=false;TreatWarningsAsErrors=true"
              Targets="Build" />
   </Target>
 

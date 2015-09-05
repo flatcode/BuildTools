@@ -5,6 +5,8 @@
 @if %ERRORLEVEL% NEQ 0 GOTO failed
 "%PROGSDIR%\MSBuild\%TOOLSVER%\Bin\MSBuild" /m Build.proj /t:Clean /p:Configuration=Release "/p:Platform=Any CPU"
 @if %ERRORLEVEL% NEQ 0 GOTO failed
+"%PROGSDIR%\MSBuild\%TOOLSVER%\Bin\MSBuild" /m Build.proj /t:Clean /p:Configuration=Publish "/p:Platform=Any CPU"
+@if %ERRORLEVEL% NEQ 0 GOTO failed
 @exit /B 0
 :failed
 @PAUSE
