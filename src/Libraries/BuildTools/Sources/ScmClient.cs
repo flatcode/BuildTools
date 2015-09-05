@@ -86,9 +86,9 @@ namespace Flatcode.BuildTools
         #region Methods
 
         /// <summary>
-        /// Executes a command.
+        /// Executes a specified command on the client.
         /// </summary>
-        /// <param name="command">The command to pass to the client executable.</param>
+        /// <param name="command">The command to execute.</param>
         /// <returns>A <see cref="ScmClientResult"/> that contains the execution result.</returns>
         public ScmClientResult Execute(String command)
         {
@@ -109,18 +109,19 @@ namespace Flatcode.BuildTools
         }
 
         /// <summary>
-        /// In derived classes, provides the client execution logic.
+        /// In derived classes, implements the client execution logic.
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
         protected abstract ScmClientResult ExecuteCore(String command);
 
         /// <summary>
-        ///
+        /// Tries to execute a specified command on the client.
         /// </summary>
-        /// <param name="command"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="result">The <see cref="ScmClientResult"/> variable that receives the result
+        /// of the exection.</param>
+        /// <returns>True if the execution was successful; otherwise, false.</returns>
         public Boolean TryExecute(String command, out ScmClientResult result)
         {
             try {
@@ -140,7 +141,9 @@ namespace Flatcode.BuildTools
         /// Creates and initializes a <see cref="ScmClient"/> based on the kind of repository.
         /// </summary>
         /// <param name="path">The repository path.</param>
-        /// <returns></returns>
+        /// <returns>An initialized <see cref="ScmClient"/> instance specific to the kind of the
+        /// repository, or a null reference if <paramref name="path"/> is not a repository or the
+        /// kind of repository is not supported.</returns>
         public static ScmClient Create(String path)
         {
             // Argument validation

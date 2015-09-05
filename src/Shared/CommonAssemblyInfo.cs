@@ -27,7 +27,7 @@ using System.Reflection;
 
 #region Attributes
 
-[assembly: AssemblyProduct("Build Tools")]
+[assembly: AssemblyProduct("Flatcode Build Tools")]
 [assembly: AssemblyCompany("Flatcode.net")]
 [assembly: AssemblyCopyright("© 2015 Flatcode.net Developer Community")]
 [assembly: AssemblyTrademark("")]

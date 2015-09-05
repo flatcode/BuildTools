@@ -19,26 +19,20 @@
  *
  **************************************************************************************************/
 
-#region Using Directives
-
-using System;
-
-#endregion
-
 namespace Flatcode.BuildTools
 {
     /// <summary>
-    ///
+    /// Specifies the source language for tasks that generate source code.
     /// </summary>
     public enum SourceLanguage
     {
         /// <summary>
-        ///
+        /// The source language is C#.
         /// </summary>
         CSharp = 0,
 
         /// <summary>
-        ///
+        /// The source language is Visual Basic.
         /// </summary>
         VisualBasic = 1
     }

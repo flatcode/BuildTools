@@ -71,10 +71,10 @@ namespace Flatcode.BuildTools
         #region Methods
 
         /// <summary>
-        ///
+        /// Executes a specified command on the Git client.
         /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
+        /// <param name="command">The command to execute.</param>
+        /// <returns>A <see cref="ScmClientResult"/> that contains the execution result.</returns>
         protected override ScmClientResult ExecuteCore(String command)
         {
             // Create process start information

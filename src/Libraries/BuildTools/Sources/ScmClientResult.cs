@@ -50,30 +50,30 @@ namespace Flatcode.BuildTools
         #region Constructors
 
         /// <summary>
-        ///
+        /// Initializes a new instance of the <see cref="ScmClientResult"/> class.
         /// </summary>
-        /// <param name="output"></param>
+        /// <param name="output">The output provided by the client.</param>
         public ScmClientResult(String output) :
             this(output, String.Empty, 0)
         {
         }
 
         /// <summary>
-        ///
+        /// Initializes a new instance of the <see cref="ScmClientResult"/> class.
         /// </summary>
-        /// <param name="output"></param>
-        /// <param name="exitCode"></param>
+        /// <param name="output">The output provided by the client.</param>
+        /// <param name="exitCode">The exit code provided by the client.</param>
         public ScmClientResult(String output, Int32 exitCode) :
             this(output, String.Empty, exitCode)
         {
         }
 
         /// <summary>
-        ///
+        /// Initializes a new instance of the <see cref="ScmClientResult"/> class.
         /// </summary>
-        /// <param name="output"></param>
-        /// <param name="error"></param>
-        /// <param name="exitCode"></param>
+        /// <param name="output">The output provided by the client.</param>
+        /// <param name="error">The error provided by the client.</param>
+        /// <param name="exitCode">The exit code provided by the client.</param>
         public ScmClientResult(String output, String error, Int32 exitCode)
         {
             // Argument validation
@@ -96,21 +96,21 @@ namespace Flatcode.BuildTools
         #region Properties
 
         /// <summary>
-        /// Gets the standard error result.
+        /// Gets the error provided by the client.
         /// </summary>
         public String Error {
             get { return error; }
         }
 
         /// <summary>
-        /// Gets the exit code.
+        /// Gets the exit code provided by the client.
         /// </summary>
         public Int32 ExitCode {
             get { return exitCode; }
         }
 
         /// <summary>
-        /// Gets the standard output result.
+        /// Gets the output provided by the client.
         /// </summary>
         public String Output {
             get { return output; }

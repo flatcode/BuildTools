@@ -44,9 +44,10 @@ namespace Flatcode.BuildTools
         /// <summary>
         /// Initializes a new instance of the <see cref="ScmClientNotFoundException"/> class.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="message"></param>
-        /// <param name="innerException"></param>
+        /// <param name="path">The path to the source code management client that is the cause of
+        /// the current exception.</param>
+        /// <param name="message">An optional exception message.</param>
+        /// <param name="innerException">An optional inner exception.</param>
         public ScmClientNotFoundException(String path = null, String message = null, Exception innerException = null) :
             base(message, innerException)
         {
@@ -59,7 +60,8 @@ namespace Flatcode.BuildTools
         #region Properties
 
         /// <summary>
-        /// Gets the path of the source code management client that is not present or installed.
+        /// Gets the path to the source code management client that is the cause of the current
+        /// exception.
         /// </summary>
         public String Path {
             get { return path; }
