@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(SolutionDir)build\Flatcode.BuildTools.tasks" Condition="Exists('$(SolutionDir)build\Flatcode.BuildTools.tasks')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -18,7 +19,7 @@
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <AssemblyOriginatorKeyFile>$(SolutionDir)snk\Community.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)snk\Debug.snk</AssemblyOriginatorKeyFile>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -27,17 +28,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <AssemblyOriginatorKeyFile>$(SolutionDir)snk\Community.snk</AssemblyOriginatorKeyFile>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Publish|AnyCPU' ">
-    <AssemblyOriginatorKeyFile>$(SolutionDir)snk\Publisher.pub</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)snk\Release.pub</AssemblyOriginatorKeyFile>
     <DelaySign>true</DelaySign>
-    <DebugType>none</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -45,23 +38,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="..\..\Shared\CommonAssemblyInfo.cs">
+    <Compile Include="..\Shared\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Sources\GitClient.cs" />
+    <Compile Include="Sources\PEHelper.cs" />
     <Compile Include="Sources\SourceLanguage.cs" />
     <Compile Include="Sources\ScmClient.cs" />
     <Compile Include="Sources\ScmClientNotFoundException.cs" />
     <Compile Include="Sources\ScmClientResult.cs" />
+    <Compile Include="Sources\Tasks\FakeSign.cs" />
     <Compile Include="Sources\Tasks\GenerateVersioningInfo.cs" />
+    <Compile Include="Sources\Tasks\SignAssembly.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(IntermediateOutputPath)\VersioningInfo.cs" Condition="Exists('$(IntermediateOutputPath)\VersioningInfo.cs')">
       <Visible>false</Visible>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <None Include="Flatcode.BuildTools.targets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Flatcode.BuildTools.tasks">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -73,4 +71,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="AfterBuild">
+    <FakeSign AssemblyFile="$(OutputPath)$(AssemblyName).dll" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' And Exists('$(OutputPath)$(AssemblyName).dll')" />
+  </Target>
 </Project>

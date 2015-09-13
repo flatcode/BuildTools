@@ -11,7 +11,7 @@
   <Import Project="$(BuildToolsPath)Flatcode.BuildTools.tasks" Condition="Exists('$(BuildToolsPath)Flatcode.BuildTools.tasks')" />
 
   <Target Name="RestorePackages">
-    <Exec Command="$(BuildToolsPath)nuget.exe restore &quot;$(MSBuildThisFileDirectory)BuildTools.sln&quot; "/>
+    <Exec Command="$(BuildToolsPath)nuget.exe restore &quot;$(TargetSolution)&quot; "/>
   </Target>
 
   <Target Name="Prebuild" DependsOnTargets="RestorePackages">
@@ -40,13 +40,6 @@
              Projects="$(TargetSolution)"
              Properties="RestorePackages=false;TreatWarningsAsErrors=true"
              Targets="Rebuild" />
-  </Target>
-
-  <Target Name="Publish" DependsOnTargets="Prebuild">
-    <MSBuild BuildInParallel="true"
-             Projects="$(TargetSolution)"
-             Properties="RestorePackages=false;TreatWarningsAsErrors=true"
-             Targets="Build" />
   </Target>
 
 </Project>

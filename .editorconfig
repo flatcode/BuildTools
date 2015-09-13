@@ -12,15 +12,18 @@ insert_final_newline = true
 
 # XML Project Files
 [*.{csproj,proj}]
+indent_style = space
 indent_size = 2
 insert_final_newline = false
 
-# XML Configuration Files
+# XML Build, Configuration, and Resource Files
 [*.{config,nuspec,props,resx,ruleset,targets,tasks}]
+indent_style = space
 indent_size = 2
 insert_final_newline = false
 
 # XML Markup Files
 [*.{xml,xaml}]
+indent_style = space
 indent_size = 2
 insert_final_newline = false

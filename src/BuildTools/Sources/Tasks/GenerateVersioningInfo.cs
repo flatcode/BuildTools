@@ -33,7 +33,7 @@ using Microsoft.Build.Utilities;
 namespace Flatcode.BuildTools.Tasks
 {
     /// <summary>
-    /// Generates versioning information for a managed assembly.
+    /// Generates versioning information for a managed assemblies.
     /// </summary>
     public sealed class GenerateVersioningInfo : Task
     {
@@ -147,6 +147,9 @@ namespace Flatcode.BuildTools.Tasks
 
         Boolean ExecuteCore()
         {
+            // Log startup message
+            Log.LogMessage("Generating versioning information file...");
+
             // Validate properties
             if (Directory.Exists(VersioningFile) || !File.Exists(VersioningFile)) {
                 throw new FileNotFoundException("Couldn't find versioning file.", VersioningFile);
@@ -267,7 +270,6 @@ namespace Flatcode.BuildTools.Tasks
         public override Boolean Execute()
         {
             try {
-                Log.LogMessage("Generating versioning information file...");
                 return ExecuteCore();
             } catch (Exception e) {
                 Log.LogErrorFromException(e);
