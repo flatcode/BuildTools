@@ -1,2 +1,75 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!--Import Flatcode Build Tasks-->
+  <Import Project="$(MSBuildThisFileDirectory)../tools/Flatcode.BuildTools.tasks" />
+
+  <!--Auto Versioning-->
+  <PropertyGroup>
+    <EnableAutoVersioning Condition=" '$(EnableAutoVersioning)' == '' ">false</EnableAutoVersioning>
+    <VersioningFile Condition=" '$(VersioningFile)' == '' ">$(SolutionDir)Version.xml</VersioningFile>
+    <VersioningInfoLanguage Condition=" '$(VersioningInfoLanguage)' == '' ">CSharp</VersioningInfoLanguage>
+    <VersioningInfoOutputName Condition=" '$(VersioningInfoName)' == '' ">$(AssemblyName).VersioningInfo</VersioningInfoOutputName>
+    <VersioningInfoOutputPath Condition=" '$(VersioningInfoOutputPath)' == '' ">$(IntermediateOutputPath)</VersioningInfoOutputPath>
+  </PropertyGroup>
+    
+  <Choose>
+    <When Condition=" '$(VersioningInfoLanguage)' == 'CSharp' ">
+      <PropertyGroup>
+        <VersioningInfoFile Condition=" '$(VersioningInfoFile)' == '' ">$(VersioningInfoOutputPath)$(VersioningInfoOutputName).cs</VersioningInfoFile>
+      </PropertyGroup>
+    </When>
+    <When Condition=" '$(VersioningInfoLanguage)' == 'VisualBasic' ">
+      <PropertyGroup>
+        <VersioningInfoFile Condition=" '$(VersioningInfoFile)' == '' ">$(VersioningInfoOutputPath)$(VersioningInfoOutputName).vb</VersioningInfoFile>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+  <Target Name="AutoVersioning" BeforeTargets="BeforeCompile" Condition=" '$(EnableAutoVersioning)' == 'true' ">
+    <GenerateVersioningInfo VersioningFile="$(VersioningFile)"
+                            Language="$(VersioningInfoLanguage)"
+                            OutputName="$(VersioningInfoOutputName)"
+                            OutputPath="$(VersioningInfoOutputPath)"
+                            Condition="Exists('$(VersioningFile)')" />
+    <ItemGroup>
+      <Compile Include="$(VersioningInfoFile)" Condition="Exists('$(VersioningInfoFile)')">
+        <Visible>false</Visible>
+      </Compile>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="CleanVersioningInfo" AfterTargets="Clean">
+    <Delete Files="$(VersioningInfoFile)" Condition="Exists('$(VersioningInfoFile)')" />
+  </Target>
+
+  <!--Fake Signing-->
+  <PropertyGroup>
+    <FakeSignAssembly Condition=" '$(FakeSignAssembly)' == '' ">false</FakeSignAssembly>
+    <FakeSignRevoke Condition=" '$(FakeSignRevoke)' == '' ">false</FakeSignRevoke>
+  </PropertyGroup>
+    
+  <Choose>
+    <When Condition=" '$(OutputType)' == 'Library' ">
+      <PropertyGroup>
+        <FakeSignAssemblyFile>$(OutputPath)$(AssemblyName).dll</FakeSignAssemblyFile>
+      </PropertyGroup>
+    </When>
+    <When Condition=" '$(OutputType)' == 'Module' ">
+      <PropertyGroup>
+        <FakeSignAssemblyFile>$(OutputPath)$(AssemblyName).netmodule</FakeSignAssemblyFile>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <FakeSignAssemblyFile>$(OutputPath)$(AssemblyName).exe</FakeSignAssemblyFile>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <Target Name="FakeSigning" AfterTargets="Build" Condition=" '$(FakeSignAssembly)' == 'true' And '$(DelaySign)' == 'true' ">
+    <FakeSign Assembly="$(FakeSignAssemblyFile)"
+              Revoke="$(FakeSignRevoke)"
+              Condition="Exists('$(FakeSignAssemblyFile)')" />
+  </Target>
+
 </Project>

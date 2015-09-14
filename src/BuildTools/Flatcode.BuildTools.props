@@ -1,0 +1,55 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!--General-->
+  <PropertyGroup>
+    <CommunityBuild Condition=" '$(CommunityBuild)' == '' ">true</CommunityBuild>  
+  </PropertyGroup>
+
+  <!--Intermediate Output Paths-->
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(SolutionDir)obj\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  
+  <!--Output Path-->
+  <Choose>
+    <When Condition=" '$(Platform)' == 'AnyCPU' ">
+      <PropertyGroup>
+        <OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <OutputPath>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutputPath>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  
+  <!--Strong Name-->
+  <PropertyGroup>
+    <KeyCommunityFile Condition=" '$(KeyCommunityFile)' == '' ">Community.snk</KeyCommunityFile>
+    <KeyOriginatorFile Condition=" '$(KeyOriginatorFile)' == '' ">Originator.pub</KeyOriginatorFile>
+    <KeyPublicPath>$(SolutionDir)snk\</KeyPublicPath>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  
+  <Choose>
+    <When Condition=" '$(CommunityBuild)' == 'true' ">
+      <PropertyGroup>
+        <AssemblyOriginatorKeyFile>$(KeyPublicPath)$(KeyCommunityFile)</AssemblyOriginatorKeyFile>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <AssemblyOriginatorKeyFile>$(KeyPublicPath)$(KeyOriginatorFile)</AssemblyOriginatorKeyFile>
+        <DelaySign>true</DelaySign>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  
+  <!--Versioning Info-->
+  <PropertyGroup>
+    <EnableAutoVersioning>true</EnableAutoVersioning>
+  </PropertyGroup>
+   
+</Project>
